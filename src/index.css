@@ -33,6 +33,9 @@ body,
   font-family: var(--font-body);
   background: var(--bg-primary);
   color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* =============================================
@@ -69,16 +72,22 @@ body,
   border-radius: 50%;
   opacity: 0;
   animation: floatParticle linear infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 @keyframes floatParticle {
   0% {
     opacity: 0;
-    transform: translateY(100vh) scale(0);
+    transform: translateY(100vh) translateX(0) scale(0);
   }
 
   10% {
     opacity: 0.8;
+  }
+
+  50% {
+    transform: translateY(50vh) translateX(15px) scale(1);
   }
 
   90% {
@@ -87,7 +96,7 @@ body,
 
   100% {
     opacity: 0;
-    transform: translateY(-10vh) scale(1);
+    transform: translateY(-10vh) translateX(-10px) scale(1);
   }
 }
 
@@ -107,6 +116,19 @@ body,
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   text-align: center;
   transition: transform var(--transition-smooth), opacity var(--transition-smooth);
+  animation: panelShimmer 8s ease-in-out infinite;
+}
+
+@keyframes panelShimmer {
+
+  0%,
+  100% {
+    box-shadow: 0 0 80px rgba(0, 229, 255, 0.05), 0 32px 64px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  50% {
+    box-shadow: 0 0 100px rgba(255, 51, 153, 0.08), 0 32px 64px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
 }
 
 .login-panel.shake {
@@ -297,8 +319,13 @@ body,
 .narrative-btn:hover {
   background: rgba(0, 229, 255, 0.08);
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 40px rgba(0, 229, 255, 0.15);
+  box-shadow: 0 0 40px rgba(0, 229, 255, 0.15), 0 0 80px rgba(0, 229, 255, 0.05);
   transform: translateY(-2px);
+}
+
+.narrative-btn:active {
+  transform: translateY(0);
+  transition: all 0.1s;
 }
 
 /* =============================================
@@ -334,7 +361,8 @@ body,
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   opacity: 0;
   transform: scale(0.9);
-  transition: opacity 0.8s, transform 0.8s;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
 }
 
 .gallery-image.visible {
